@@ -760,11 +760,14 @@
       border: none;
       outline: none;
       z-index: 3;
+    }
+
+    .tulip-btn svg {
       transition: transform 0.3s ease;
       filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
     }
 
-    .tulip-btn:hover {
+    .tulip-btn:hover svg {
       transform: scale(1.12);
     }
 
@@ -940,17 +943,17 @@
       }
 
       .story-title {
-        font-size: 1.4rem;
+        font-size: 1.7rem;
         margin-bottom: 2px;
       }
 
       .orn {
-        margin: 4px 0;
-        font-size: 0.8rem;
+        margin: 6px 0;
+        font-size: 0.9rem;
       }
 
       .story-text {
-        font-size: 1rem;
+        font-size: 1.25rem;
         line-height: 1.65;
       }
 
@@ -1051,9 +1054,25 @@
       }
 
       .msg-bubble {
-        width: 210px;
-        font-size: 0.88rem;
-        padding: 12px 14px;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        bottom: auto;
+        transform: translate(-50%, -50%) scale(0) !important;
+        width: 85vw;
+        max-width: 340px;
+        font-size: 1.15rem;
+        padding: 24px;
+        z-index: 1000;
+        box-shadow: 0 10px 40px rgba(194, 112, 78, 0.3);
+      }
+
+      .msg-bubble.show {
+        transform: translate(-50%, -50%) scale(1) !important;
+      }
+
+      .msg-bubble::after {
+        display: none;
       }
     }
 
@@ -1079,12 +1098,12 @@
       }
 
       .story-title {
-        font-size: 1.25rem;
+        font-size: 1.75rem;
       }
 
       .story-text {
-        font-size: 0.95rem;
-        line-height: 1.6;
+        font-size: 1.35rem;
+        line-height: 1.65;
       }
 
       .orn {
@@ -1098,15 +1117,15 @@
       }
 
       .cover-title {
-        font-size: 1.8rem;
+        font-size: 2.2rem;
       }
 
       .cover-subtitle {
-        font-size: 1.1rem;
+        font-size: 1.3rem;
       }
 
       .cover-for {
-        font-size: 0.9rem;
+        font-size: 1.1rem;
       }
 
       .cover-cat svg {
@@ -1114,21 +1133,21 @@
       }
 
       .book-label {
-        font-size: 0.8rem;
-        padding: 4px 14px;
+        font-size: 1rem;
+        padding: 6px 16px;
         margin-bottom: 6px;
       }
 
       .closing-title {
-        font-size: 1.5rem;
+        font-size: 1.8rem;
       }
 
       .closing-text {
-        font-size: 0.95rem;
+        font-size: 1.15rem;
       }
 
       .closing-sig {
-        font-size: 1.15rem;
+        font-size: 1.4rem;
       }
 
       .book::before {
@@ -1148,11 +1167,6 @@
       .tulip-btn svg {
         width: 36px !important;
       }
-
-      .msg-bubble {
-        width: 190px;
-        font-size: 0.82rem;
-      }
     }
 
     /* Very small phones */
@@ -1162,11 +1176,11 @@
       }
 
       .story-text {
-        font-size: 0.9rem;
+        font-size: 1.15rem;
       }
 
       .story-title {
-        font-size: 1.15rem;
+        font-size: 1.55rem;
       }
 
       .cat-scene svg {
@@ -1717,21 +1731,29 @@
 
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
+        document.querySelectorAll('.tulip-btn').forEach(t => t.style.zIndex = '3');
         document.querySelectorAll('.msg-bubble.show').forEach(b => {
           if (b !== bubble) b.classList.remove('show');
         });
-        bubble.classList.toggle('show');
+        
+        if (bubble.classList.toggle('show')) {
+          btn.style.zIndex = '100';
+        } else {
+          btn.style.zIndex = '3';
+        }
       });
     });
 
     document.addEventListener('click', () => {
       document.querySelectorAll('.msg-bubble.show').forEach(b => b.classList.remove('show'));
+      document.querySelectorAll('.tulip-btn').forEach(t => t.style.zIndex = '3');
     });
 
     document.querySelectorAll('.msg-bubble').forEach(b => {
       b.addEventListener('click', (e) => {
         e.stopPropagation();
         b.classList.remove('show');
+        b.parentElement.style.zIndex = '3';
       });
     });
   </script>
